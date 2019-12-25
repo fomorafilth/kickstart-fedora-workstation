@@ -52,12 +52,78 @@ text
 
 # Package Selection
 %packages
-@gnome-desktop
+@core
+@standard
+@hardware-support
+@base-x
+@fonts
+@networkmanager-submodules
+@xfce-desktop
+vim
+NetworkManager-openvpn-gnome
+redshift-gtk
+nmap
+tcpdump
+redhat-rpm-config
+rpmconf
+strace
+git-review
+gcc-c++
+readline-devel
+python3-virtualenvwrapper
+usbmuxd
+ifuse
+jq
+icedtea-web
 docker
 %end
 
 # Post-installation Script
 %post
+# Harden sshd options
+echo "" > /etc/ssh/sshd_config
+
+#vimrc configuration
+echo "filetype plugin indent on
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set nohlsearch" > /home/sina/.vimrc
+
+cat <<EOF > /home/sina/.bashrc
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+source /usr/bin/virtualenvwrapper.sh
+export GOPATH=/home/sina/Development/go
+export PATH=$PATH:/home/sina/Development/go/bin
+alias irssi='firejail irssi'
+EOF
+
+# Disable IPv6
+cat <<EOF >> /etc/sysctl.conf
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+EOF
+
+# Enable services
+systemctl enable usbmuxd
+
+# Disable services
+systemctl disable sssd
+systemctl disable bluetooth.target
+systemctl disable avahi-daemon
+systemctl disable abrtd
+systemctl disable abrt-ccpp
+systemctl disable mlocate-updatedb
+systemctl disable mlocate-updatedb.timer
+systemctl disable gssproxy
+systemctl disable bluetooth
+systemctl disable geoclue
+systemctl disable ModemManager
+sed -i 's/Disabled=false/Disabled=true/g' /etc/xdg/tumbler/tumbler.rc
+#
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
 %end
