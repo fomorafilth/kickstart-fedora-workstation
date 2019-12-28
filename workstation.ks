@@ -126,6 +126,11 @@ sed -i 's/Disabled=false/Disabled=true/g' /etc/xdg/tumbler/tumbler.rc
 #
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
+curl -o /gjscript.sh https://raw.githubusercontent.com/NurAliia/kickstart-fedora-workstation/develop/containers.sh
+chmod +x /gjscript.sh 
+curl -o /gj.service https://raw.githubusercontent.com/NurAliia/kickstart-fedora-workstation/develop/containers.service
+chmod 644 /gj.service
+systemctl enable gj.service
 %end
 
 # Reboot After Installation
