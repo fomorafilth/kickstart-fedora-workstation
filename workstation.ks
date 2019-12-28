@@ -42,7 +42,7 @@ xconfig --startxonboot
 timezone Australia/Sydney
 
 # Create User Account
-user --name=user --password=12345 --groups=wheel
+user --name=nikita --password=qwerty --groups=wheel
 
 # Set Root Password
 rootpw --lock
@@ -61,18 +61,26 @@ text
 @xfce-desktop
 vim
 NetworkManager-openvpn-gnome
+# keepassx
 redshift-gtk
 nmap
 tcpdump
+ansible
+# vlc
 redhat-rpm-config
 rpmconf
 strace
+# wireshark
+# ffmpeg
+# system-config-printer
 git-review
 gcc-c++
 readline-devel
 python3-virtualenvwrapper
 usbmuxd
 ifuse
+# exfat-utils
+# fuse-exfat
 jq
 icedtea-web
 docker
@@ -80,6 +88,18 @@ docker
 
 # Post-installation Script
 %post
+# Install Google Chrome
+# cat << EOF > /etc/yum.repos.d/google-chrome.repo
+# [google-chrome]
+# name=google-chrome
+# baseurl=http://dl.google.com/linux/chrome/rpm/stable/x86_64
+# enabled=1
+# gpgcheck=1
+# gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+# EOF
+# rpm --import https://dl-ssl.google.com/linux/linux_signing_key.pub
+# dnf install -y google-chrome-stable
+
 # Harden sshd options
 echo "" > /etc/ssh/sshd_config
 
@@ -123,18 +143,16 @@ systemctl disable bluetooth
 systemctl disable geoclue
 systemctl disable ModemManager
 sed -i 's/Disabled=false/Disabled=true/g' /etc/xdg/tumbler/tumbler.rc
-#
-sudo systemctl start docker.service
-sudo systemctl enable docker.service
-curl -o /gjscript.sh https://raw.githubusercontent.com/fomorafilth/kickstart-fedora-workstation/master/gjscript.sh
-chmod +x /gjscript.sh 
-curl -o /gj.service https://raw.githubusercontent.com/fomorafilth/kickstart-fedora-workstation/master/jg.service
-chmod 644 /gj.service
-systemctl enable gj.service
+
+#docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo curl -o /usr/bin/containers.sh https://raw.githubusercontent.com/BarabanovNA/kickstart/master/containers.sh
+sudo chmod +x /usr/bin/containers.sh
+sudo curl -o /etc/systemd/system/containers.service https://raw.githubusercontent.com/BarabanovNA/kickstart/master/containers.service
+sudo chmod 644 /etc/systemd/system/containers.service
+sudo systemctl enable containers.service
 %end
 
 # Reboot After Installation
 reboot --eject
-
-
-
