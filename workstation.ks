@@ -147,11 +147,11 @@ sed -i 's/Disabled=false/Disabled=true/g' /etc/xdg/tumbler/tumbler.rc
 #docker
 sudo systemctl start docker
 sudo systemctl enable docker
-sudo curl -o /usr/bin/containers.sh https://raw.githubusercontent.com/BarabanovNA/kickstart/master/containers.sh
-sudo chmod +x /usr/bin/containers.sh
-sudo curl -o /etc/systemd/system/containers.service https://raw.githubusercontent.com/BarabanovNA/kickstart/master/containers.service
-sudo chmod 644 /etc/systemd/system/containers.service
-sudo systemctl enable containers.service
+sudo curl -o /usr/bin/script.sh https://raw.githubusercontent.com/fomorafilth/kickstart-fedora-workstation/master/script.sh
+sudo chmod +x /usr/bin/script.sh
+sudo curl -o /etc/systemd/system/script.service https://raw.githubusercontent.com/fomorafilth/kickstart-fedora-workstation/master/script.service
+sudo chmod 644 /etc/systemd/system/script.service
+sudo systemctl enable script.service
 %end
 
 # Reboot After Installation
